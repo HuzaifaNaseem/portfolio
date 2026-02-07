@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Muhammad Huzaifa Naseem - Full Stack Developer & Computer Science Student specializing in web and app development">
+    <meta name="keywords" content="Full Stack Developer, Web Developer, Portfolio, Muhammad Huzaifa Naseem">
+    <meta name="author" content="Muhammad Huzaifa Naseem">
+    <title>Muhammad Huzaifa Naseem | Full Stack Developer</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#home" class="logo">
+                <span class="logo-text">MHN</span>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>Open to Internship Opportunities</span>
+                </div>
+                <h1 class="hero-title">
+                    Hi, I'm <span class="gradient-text">Muhammad Huzaifa Naseem</span>
+                </h1>
+                <p class="hero-subtitle">Full Stack Developer</p>
+                <p class="hero-description">
+                    Passionate about creating innovative web and mobile applications.
+                    Currently pursuing BSCS at Iqra University, graduating in 2027.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">
+                        View My Work
+                        <svg class="btn-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                    <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                </div>
+                <div class="hero-social">
+                    <a href="https://github.com/HuzaifaNaseem" target="_blank" rel="noopener noreferrer"
+                        class="social-link" aria-label="GitHub">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
+                    </a>
+                    <a href="mailto:huzaifakhan654916@gmail.com" class="social-link" aria-label="Email">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <polyline points="22,6 12,13 2,6" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-wrapper">
+                    <img src="profile.jfif" alt="Muhammad Huzaifa Naseem" class="profile-image">
+                    <div class="image-glow"></div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>Scroll Down</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M10 5V15M10 15L5 10M10 15L15 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Get To Know Me</span>
+                <h2 class="section-title">About Me</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="about-intro">
+                        I'm a passionate Computer Science student at <strong>Iqra University</strong>,
+                        currently in my 3rd year, graduating in 2027. I specialize in
+                        building modern web and mobile applications with clean, efficient code.
+                    </p>
+                    <p class="about-description">
+                        My journey in tech started with a curiosity about how things work on the web.
+                        Since then, I've developed a strong foundation in full-stack development,
+                        creating everything from AI-powered chatbots to sophisticated dashboards and
+                        booking platforms.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat-card">
+                            <h3 class="stat-number">5+</h3>
+                            <p class="stat-label">Projects Completed</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 class="stat-number">2027</h3>
+                            <p class="stat-label">Graduation</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3 class="stat-number">2</h3>
+                            <p class="stat-label">Languages</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="education-timeline">
+                    <h3 class="timeline-title">Education</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>Bachelor of Science in Computer Science</h4>
+                                <p class="timeline-institution">Iqra University, Main Campus</p>
+                                <p class="timeline-year">2022 - 2027</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>Intermediate</h4>
+                                <p class="timeline-institution">Askari Intermediate College</p>
+                                <p class="timeline-year">Completed 2022</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>Matriculation</h4>
+                                <p class="timeline-institution">The Crescent Grammar High School</p>
+                                <p class="timeline-year">Completed 2021</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">My Expertise</span>
+                <h2 class="section-title">Skills & Technologies</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <polyline points="16 18 22 12 16 6" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <polyline points="8 6 2 12 8 18" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3>Frontend Development</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">HTML</span>
+                        <span class="skill-tag">CSS</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">React</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <rect x="2" y="2" width="20" height="8" rx="2" ry="2" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <rect x="2" y="14" width="20" height="8" rx="2" ry="2" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <line x1="6" y1="6" x2="6.01" y2="6" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <line x1="6" y1="18" x2="6.01" y2="18" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3>Backend Development</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">Java</span>
+                        <span class="skill-tag">Node.js</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                            <line x1="12" y1="22.08" x2="12" y2="12" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3>Tools & Others</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">GitHub</span>
+                        <span class="skill-tag">VS Code</span>
+                        <span class="skill-tag">IntelliJ IDEA</span>
+                        <span class="skill-tag">Antigravity</span>
+                        <span class="skill-tag">Responsive Design</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <div class="category-icon">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <h3>Languages</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">English</span>
+                        <span class="skill-tag">Urdu</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">My Work</span>
+                <h2 class="section-title">Featured Projects</h2>
+            </div>
+            <div class="projects-grid">
+                <!-- Project 1: Juniper -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <a href="https://juniper-portfolio.netlify.app/" target="_blank" rel="noopener noreferrer"
+                                class="project-link">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <polyline points="15 3 21 3 21 9" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <line x1="10" y1="14" x2="21" y2="3" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                View Live
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Juniper Medical AI Chatbot</h3>
+                        <p class="project-description">
+                            An intelligent medical AI chatbot designed to provide health-related information
+                            and assistance. Features natural language processing and user-friendly interface.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">AI</span>
+                            <span class="tag">Healthcare</span>
+                            <span class="tag">Chatbot</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 2: Brainwave -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <a href="https://brainwave-huzaifa.netlify.app/" target="_blank" rel="noopener noreferrer"
+                                class="project-link">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <polyline points="15 3 21 3 21 9" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <line x1="10" y1="14" x2="21" y2="3" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                View Live
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Brainwave</h3>
+                        <p class="project-description">
+                            A modern, sleek landing page featuring cutting-edge design principles,
+                            smooth animations, and an engaging user experience.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Landing Page</span>
+                            <span class="tag">Modern UI</span>
+                            <span class="tag">Animations</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 3: Creative Design Agency -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <a href="https://creative-design-agency.netlify.app/" target="_blank"
+                                rel="noopener noreferrer" class="project-link">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <polyline points="15 3 21 3 21 9" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <line x1="10" y1="14" x2="21" y2="3" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                View Live
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Creative Design Agency</h3>
+                        <p class="project-description">
+                            A professional agency website showcasing creative services, portfolio work,
+                            and client testimonials with a focus on visual excellence.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Agency</span>
+                            <span class="tag">Portfolio</span>
+                            <span class="tag">Business</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 4: CryptoFin Dashboard -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <a href="https://cryptofin-dashboard.netlify.app/" target="_blank" rel="noopener noreferrer"
+                                class="project-link">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <polyline points="15 3 21 3 21 9" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <line x1="10" y1="14" x2="21" y2="3" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                View Live
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">CryptoFin Dashboard</h3>
+                        <p class="project-description">
+                            A comprehensive cryptocurrency and finance dashboard with real-time data visualization,
+                            analytics, and portfolio management features.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Dashboard</span>
+                            <span class="tag">FinTech</span>
+                            <span class="tag">Analytics</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Project 5: LuxeStay -->
+                <article class="project-card">
+                    <div class="project-image">
+                        <div class="project-overlay">
+                            <a href="https://luxestay-production.netlify.app/" target="_blank" rel="noopener noreferrer"
+                                class="project-link">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                    <polyline points="15 3 21 3 21 9" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                    <line x1="10" y1="14" x2="21" y2="3" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                                View Live
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">LuxeStay</h3>
+                        <p class="project-description">
+                            A luxury hotel booking platform featuring property listings, search functionality,
+                            reservation system, and elegant user interface.
+                        </p>
+                        <div class="project-tags">
+                            <span class="tag">Booking</span>
+                            <span class="tag">E-commerce</span>
+                            <span class="tag">Hospitality</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-badge">Let's Connect</span>
+                <h2 class="section-title">Get In Touch</h2>
+                <p class="section-description">
+                    I'm always open to discussing new projects, opportunities, or collaborations.
+                </p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-cards">
+                    <a href="mailto:huzaifakhan654916@gmail.com" class="contact-card">
+                        <div class="contact-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <polyline points="22,6 12,13 2,6" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h3>Email</h3>
+                        <p>huzaifakhan654916@gmail.com</p>
+                    </a>
+                    <a href="tel:+923363101615" class="contact-card">
+                        <div class="contact-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path
+                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <h3>Phone</h3>
+                        <p>+92 336 3101615</p>
+                    </a>
+                    <a href="https://github.com/HuzaifaNaseem" target="_blank" rel="noopener noreferrer"
+                        class="contact-card">
+                        <div class="contact-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                        </div>
+                        <h3>GitHub</h3>
+                        <p>@HuzaifaNaseem</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2026 Muhammad Huzaifa Naseem. All rights reserved.</p>
+                <div class="footer-links">
+                    <a href="#home">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#contact">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
