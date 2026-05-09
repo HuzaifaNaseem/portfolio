@@ -950,6 +950,40 @@ section {
     font-weight: 500;
 }
 
+/* Always-visible View Live button */
+.project-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: var(--spacing-md);
+    padding: 0.75rem var(--spacing-md);
+    width: 100%;
+    background: var(--gradient-primary);
+    color: #fff;
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: var(--transition-base);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.project-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.5);
+    opacity: 0.95;
+}
+
+.project-btn svg {
+    flex-shrink: 0;
+    transition: var(--transition-fast);
+}
+
+.project-btn:hover svg {
+    transform: translate(2px, -2px);
+}
+
 /* Contact Section */
 .contact-content {
     max-width: 800px;
