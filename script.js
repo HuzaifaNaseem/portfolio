@@ -13,6 +13,55 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', next);
 });
 
+// ── Custom Cursor & Magnetic Effects ──────────────────────
+const cursorDot = document.querySelector('.cursor-dot');
+const cursorGlow = document.querySelector('.cursor-glow');
+
+if (cursorDot && cursorGlow) {
+    window.addEventListener('mousemove', (e) => {
+        const posX = e.clientX;
+        const posY = e.clientY;
+        
+        cursorDot.style.left = `${posX}px`;
+        cursorDot.style.top = `${posY}px`;
+        
+        // Add slight delay to glow for smooth trailing effect
+        cursorGlow.animate({
+            left: `${posX}px`,
+            top: `${posY}px`
+        }, { duration: 500, fill: "forwards" });
+    });
+
+    // Hover effect for interactive elements
+    const interactives = document.querySelectorAll('a, button, .project-card, .skill-tag');
+    interactives.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            document.body.classList.add('cursor-hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            document.body.classList.remove('cursor-hover');
+        });
+    });
+}
+
+// Magnetic Buttons
+const magneticButtons = document.querySelectorAll('.btn, .project-btn, .social-link');
+magneticButtons.forEach(btn => {
+    btn.addEventListener('mousemove', function(e) {
+        const rect = this.getBoundingClientRect();
+        const h = rect.width / 2;
+        const v = rect.height / 2;
+        const x = e.clientX - rect.left - h;
+        const y = e.clientY - rect.top - v;
+        
+        this.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+    });
+    
+    btn.addEventListener('mouseleave', function() {
+        this.style.transform = `translate(0px, 0px)`;
+    });
+});
+
 // Smooth scroll for navigation links
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
