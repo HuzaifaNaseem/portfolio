@@ -13,27 +13,7 @@ themeToggle.addEventListener('click', () => {
     localStorage.setItem('theme', next);
 });
 
-// ── Custom Magnetic Effects ──────────────────────
-// Magnetic Buttons
-const magneticButtons = document.querySelectorAll('.btn, .project-btn, .social-link');
-magneticButtons.forEach(btn => {
-    btn.addEventListener('mousemove', function(e) {
-        const rect = this.getBoundingClientRect();
-        const h = rect.width / 2;
-        const v = rect.height / 2;
-        const x = e.clientX - rect.left - h;
-        const y = e.clientY - rect.top - v;
-        
-        this.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-    });
-    
-    btn.addEventListener('mouseleave', function() {
-        this.style.transform = `translate(0px, 0px)`;
-    });
-});
-
-// Smooth scroll for navigation links
-
+// ── Smooth scroll for navigation links ───────────────────
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -47,7 +27,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar scroll effect
+// ── Navbar scroll effect ─────────────────────────────────
 const navbar = document.getElementById('navbar');
 let lastScroll = 0;
 
@@ -63,7 +43,7 @@ window.addEventListener('scroll', () => {
     lastScroll = currentScroll;
 });
 
-// Active navigation link on scroll
+// ── Active navigation link on scroll ─────────────────────
 const sections = document.querySelectorAll('section');
 const navLinks = document.querySelectorAll('.nav-link');
 
@@ -87,7 +67,7 @@ window.addEventListener('scroll', () => {
     });
 });
 
-// Mobile menu toggle
+// ── Mobile menu toggle ───────────────────────────────────
 const mobileToggle = document.getElementById('mobileToggle');
 const navMenu = document.getElementById('navMenu');
 
@@ -104,75 +84,30 @@ navLinks.forEach(link => {
     });
 });
 
-// ── GSAP ScrollTrigger Registration ──────────────────────
+// ── GSAP + ScrollTrigger ─────────────────────────────────
 gsap.registerPlugin(ScrollTrigger);
 
-// ── Text Reveal: Split text into letters ─────────────────
+// ── Text Reveal: Only for SIMPLE text elements (no nested HTML) ──
 document.querySelectorAll('.text-reveal').forEach(el => {
-    // Preserve the gradient-text span inside hero-title
-    if (el.classList.contains('hero-title')) {
-        const html = el.innerHTML;
-        // Split text nodes into letters, keep <span> tags intact
-        let result = '';
-        let insideTag = false;
-        let tagContent = '';
-        
-        for (let i = 0; i < html.length; i++) {
-            const char = html[i];
-            if (char === '<') {
-                insideTag = true;
-                tagContent += char;
-            } else if (char === '>') {
-                insideTag = false;
-                tagContent += char;
-                
-                // Check if it's an opening gradient-text span
-                if (tagContent.includes('class="gradient-text"')) {
-                    // Extract text content between open/close span tags
-                    const closeIdx = html.indexOf('</span>', i);
-                    const innerText = html.substring(i + 1, closeIdx);
-                    const letters = innerText.split('').map(c => 
-                        c === ' ' ? '<span class="letter-space"></span>' : 
-                        `<span class="letter">${c}</span>`
-                    ).join('');
-                    result += `<span class="gradient-text">${letters}</span>`;
-                    i = closeIdx + '</span>'.length - 1;
-                } else if (tagContent.includes('</')) {
-                    // Skip closing tags (already handled)
-                } else {
-                    result += tagContent;
-                }
-                tagContent = '';
-            } else if (insideTag) {
-                tagContent += char;
-            } else {
-                // Regular text outside tags
-                if (char === ' ') {
-                    result += '<span class="letter-space"></span>';
-                } else {
-                    result += `<span class="letter">${char}</span>`;
-                }
-            }
-        }
-        el.innerHTML = result;
-    } else {
-        const text = el.textContent;
-        el.innerHTML = text.split('').map(char => 
-            char === ' ' ? '<span class="letter-space"></span>' : 
-            `<span class="letter">${char}</span>`
-        ).join('');
-    }
+    // SKIP the hero-title — it has nested <span> tags that break
+    if (el.classList.contains('hero-title')) return;
+    
+    const text = el.textContent;
+    el.innerHTML = text.split('').map(char =>
+        char === ' ' ? '<span class="letter-space"> </span>' :
+        `<span class="letter">${char}</span>`
+    ).join('');
 });
 
-// ── Hero Entrance Animation (Cinematic) ──────────────────
+// ── Hero Entrance Animation ──────────────────────────────
 const heroTl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
 heroTl
-    .from('.hero-badge', { 
-        y: 30, opacity: 0, duration: 0.8 
+    .from('.hero-badge', {
+        y: 30, opacity: 0, duration: 0.8
     })
-    .to('.hero-title .letter', {
-        y: 0, opacity: 1, duration: 0.6, stagger: 0.03, ease: 'back.out(1.5)'
+    .from('.hero-title', {
+        y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
     }, '-=0.3')
     .to('.hero-subtitle .letter', {
         y: 0, opacity: 1, duration: 0.5, stagger: 0.04, ease: 'back.out(1.5)'
@@ -187,7 +122,7 @@ heroTl
         y: 15, opacity: 0, duration: 0.4, stagger: 0.1
     }, '-=0.3')
     .from('.hero-image', {
-        x: 80, opacity: 0, duration: 1, ease: 'power3.out'
+        x: 60, opacity: 0, duration: 1, ease: 'power3.out'
     }, '-=0.8')
     .from('.scroll-indicator', {
         y: 20, opacity: 0, duration: 0.6
@@ -195,12 +130,11 @@ heroTl
 
 // ── Section Title Reveals (on scroll) ────────────────────
 document.querySelectorAll('section .text-reveal').forEach(el => {
-    // Skip hero elements (they animate on page load)
     if (el.closest('.hero')) return;
-    
+
     const letters = el.querySelectorAll('.letter');
     if (letters.length === 0) return;
-    
+
     gsap.to(letters, {
         y: 0,
         opacity: 1,
@@ -242,7 +176,7 @@ gsap.utils.toArray('.section-description').forEach(desc => {
 // ── About Text (paragraphs slide in) ─────────────────────
 gsap.utils.toArray('.about-intro, .about-description').forEach((p, i) => {
     gsap.from(p, {
-        x: -50, opacity: 0, duration: 0.8,
+        y: 30, opacity: 0, duration: 0.8,
         delay: i * 0.15,
         scrollTrigger: {
             trigger: p,
@@ -260,10 +194,9 @@ document.querySelectorAll('.stat-card').forEach((card, i) => {
         ease: 'back.out(1.7)',
         scrollTrigger: {
             trigger: card,
-            start: 'top 85%',
+            start: 'top 90%',
             toggleActions: 'play none none none',
             onEnter: () => {
-                // Count-up animation
                 const numEl = card.querySelector('.stat-number');
                 if (numEl && numEl.dataset.count) {
                     const target = parseInt(numEl.dataset.count);
@@ -286,8 +219,8 @@ document.querySelectorAll('.stat-card').forEach((card, i) => {
 // ── Skill Categories (stagger from below) ────────────────
 gsap.utils.toArray('.skill-category').forEach((cat, i) => {
     gsap.from(cat, {
-        y: 60, opacity: 0, scale: 0.95, duration: 0.7,
-        delay: i * 0.12,
+        y: 50, opacity: 0, duration: 0.7,
+        delay: i * 0.1,
         ease: 'power3.out',
         scrollTrigger: {
             trigger: cat,
@@ -301,14 +234,14 @@ gsap.utils.toArray('.skill-category').forEach((cat, i) => {
 document.querySelectorAll('.project-card').forEach((card, i) => {
     const fromLeft = i % 2 === 0;
     gsap.from(card, {
-        x: fromLeft ? -100 : 100,
+        x: fromLeft ? -80 : 80,
         y: 30,
         opacity: 0,
         duration: 0.9,
         ease: 'power3.out',
         scrollTrigger: {
             trigger: card,
-            start: 'top 85%',
+            start: 'top 88%',
             toggleActions: 'play none none none'
         }
     });
@@ -317,12 +250,12 @@ document.querySelectorAll('.project-card').forEach((card, i) => {
 // ── Education Timeline (cascade in from left) ────────────
 document.querySelectorAll('.timeline-item').forEach((item, i) => {
     gsap.from(item, {
-        x: -60, opacity: 0, duration: 0.7,
-        delay: i * 0.2,
+        x: -50, opacity: 0, duration: 0.7,
+        delay: i * 0.15,
         ease: 'power3.out',
         scrollTrigger: {
             trigger: item,
-            start: 'top 85%',
+            start: 'top 88%',
             toggleActions: 'play none none none'
         }
     });
@@ -331,7 +264,7 @@ document.querySelectorAll('.timeline-item').forEach((item, i) => {
 // ── Contact Cards (stagger scale-in) ─────────────────────
 gsap.utils.toArray('.contact-card').forEach((card, i) => {
     gsap.from(card, {
-        y: 50, opacity: 0, scale: 0.9, duration: 0.6,
+        y: 40, opacity: 0, scale: 0.95, duration: 0.6,
         delay: i * 0.1,
         ease: 'back.out(1.5)',
         scrollTrigger: {
@@ -342,82 +275,101 @@ gsap.utils.toArray('.contact-card').forEach((card, i) => {
     });
 });
 
-// ── Parallax Gradient Orbs ───────────────────────────────
-window.addEventListener('mousemove', (e) => {
-    const orbs = document.querySelectorAll('.gradient-orb');
-    const mouseX = e.clientX / window.innerWidth;
-    const mouseY = e.clientY / window.innerHeight;
-    
-    orbs.forEach((orb, index) => {
-        const speed = (index + 1) * 20;
-        const x = (mouseX - 0.5) * speed;
-        const y = (mouseY - 0.5) * speed;
-        
-        gsap.to(orb, { x, y, duration: 1, ease: 'power2.out' });
-    });
-});
+// ── Parallax Gradient Orbs (desktop only) ────────────────
+if (window.innerWidth > 768) {
+    window.addEventListener('mousemove', (e) => {
+        const orbs = document.querySelectorAll('.gradient-orb');
+        const mouseX = e.clientX / window.innerWidth;
+        const mouseY = e.clientY / window.innerHeight;
 
-// ── Smooth reveal animation to timeline items ────────────
-const timelineItems = document.querySelectorAll('.timeline-item');
-// (Already handled by GSAP above)
+        orbs.forEach((orb, index) => {
+            const speed = (index + 1) * 20;
+            const x = (mouseX - 0.5) * speed;
+            const y = (mouseY - 0.5) * speed;
+
+            gsap.to(orb, { x, y, duration: 1, ease: 'power2.out' });
+        });
+    });
+}
 
 // ── Skill tags hover effect ──────────────────────────────
 const skillTags = document.querySelectorAll('.skill-tag');
 skillTags.forEach(tag => {
-    tag.addEventListener('mouseenter', function() {
+    tag.addEventListener('mouseenter', function () {
         gsap.to(this, { scale: 1.1, duration: 0.2, ease: 'power2.out' });
     });
-    
-    tag.addEventListener('mouseleave', function() {
+
+    tag.addEventListener('mouseleave', function () {
         gsap.to(this, { scale: 1, duration: 0.2, ease: 'power2.out' });
     });
 });
 
-// ── Project cards tilt effect on hover ───────────────────
-const projectCards = document.querySelectorAll('.project-card');
-projectCards.forEach(card => {
-    card.addEventListener('mousemove', function(e) {
-        const rect = this.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 20;
-        const rotateY = (centerX - x) / 20;
-        
-        gsap.to(this, {
-            rotateX, rotateY,
-            transformPerspective: 1000,
-            duration: 0.3,
-            ease: 'power2.out'
+// ── Project cards tilt effect (desktop only) ─────────────
+if (window.innerWidth > 768) {
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        card.addEventListener('mousemove', function (e) {
+            const rect = this.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+
+            const rotateX = (y - centerY) / 25;
+            const rotateY = (centerX - x) / 25;
+
+            gsap.to(this, {
+                rotateX, rotateY,
+                transformPerspective: 1000,
+                duration: 0.3,
+                ease: 'power2.out'
+            });
+        });
+
+        card.addEventListener('mouseleave', function () {
+            gsap.to(this, {
+                rotateX: 0, rotateY: 0,
+                duration: 0.5,
+                ease: 'elastic.out(1, 0.5)'
+            });
         });
     });
-    
-    card.addEventListener('mouseleave', function() {
-        gsap.to(this, {
-            rotateX: 0, rotateY: 0,
-            duration: 0.5,
-            ease: 'elastic.out(1, 0.5)'
+}
+
+// ── Magnetic buttons (desktop only) ──────────────────────
+if (window.innerWidth > 768) {
+    const magneticButtons = document.querySelectorAll('.btn, .project-btn, .social-link');
+    magneticButtons.forEach(btn => {
+        btn.addEventListener('mousemove', function (e) {
+            const rect = this.getBoundingClientRect();
+            const h = rect.width / 2;
+            const v = rect.height / 2;
+            const x = e.clientX - rect.left - h;
+            const y = e.clientY - rect.top - v;
+
+            this.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
+        });
+
+        btn.addEventListener('mouseleave', function () {
+            this.style.transform = `translate(0px, 0px)`;
         });
     });
-});
+}
 
 // ── Page Load Animation ──────────────────────────────────
-gsap.from('body', { opacity: 0, duration: 0.6, ease: 'power2.out' });
+gsap.from('body', { opacity: 0, duration: 0.5, ease: 'power2.out' });
 
-// ── Smooth scroll indicator hide on scroll ───────────────
+// ── Scroll indicator hide ────────────────────────────────
 const scrollIndicator = document.querySelector('.scroll-indicator');
 if (scrollIndicator) {
-    ScrollTrigger.create({
-        start: 200,
-        onUpdate: (self) => {
-            gsap.to(scrollIndicator, {
-                opacity: self.progress > 0 ? 0 : 1,
-                pointerEvents: self.progress > 0 ? 'none' : 'auto',
-                duration: 0.3
-            });
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 200) {
+            scrollIndicator.style.opacity = '0';
+            scrollIndicator.style.pointerEvents = 'none';
+        } else {
+            scrollIndicator.style.opacity = '1';
+            scrollIndicator.style.pointerEvents = 'auto';
         }
     });
 }
