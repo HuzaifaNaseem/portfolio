@@ -87,15 +87,11 @@ navLinks.forEach(link => {
 // ── GSAP + ScrollTrigger ─────────────────────────────────
 gsap.registerPlugin(ScrollTrigger);
 
-const isMobile = window.matchMedia('(max-width: 768px)').matches;
-
 // ── Text Reveal: Only for SIMPLE text elements (no nested HTML) ──
-// Skip letter-splitting inside the hero on mobile — it can leave letters
-// stuck at opacity:0 if the timeline below is bypassed.
 document.querySelectorAll('.text-reveal').forEach(el => {
+    // SKIP the hero-title — it has nested <span> tags that break
     if (el.classList.contains('hero-title')) return;
-    if (isMobile && el.closest('.hero')) return;
-
+    
     const text = el.textContent;
     el.innerHTML = text.split('').map(char =>
         char === ' ' ? '<span class="letter-space"> </span>' :
@@ -103,46 +99,34 @@ document.querySelectorAll('.text-reveal').forEach(el => {
     ).join('');
 });
 
-// ── Hero Entrance Animation (desktop / tablet only) ──────
-// On mobile, GSAP `.from()` animations were leaving buttons + social links
-// invisible (stuck at opacity:0), creating a huge empty gap before the
-// profile image. Mobile gets a tiny fade-in instead.
-if (!isMobile) {
-    const heroTl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+// ── Hero Entrance Animation ──────────────────────────────
+const heroTl = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-    heroTl
-        .from('.hero-badge', {
-            y: 30, opacity: 0, duration: 0.8
-        })
-        .from('.hero-title', {
-            y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
-        }, '-=0.3')
-        .to('.hero-subtitle .letter', {
-            y: 0, opacity: 1, duration: 0.5, stagger: 0.04, ease: 'back.out(1.5)'
-        }, '-=0.3')
-        .from('.hero-description', {
-            y: 20, opacity: 0, duration: 0.8
-        }, '-=0.2')
-        .from('.hero-buttons .btn', {
-            y: 20, opacity: 0, duration: 0.6, stagger: 0.15
-        }, '-=0.4')
-        .from('.social-link', {
-            y: 15, opacity: 0, duration: 0.4, stagger: 0.1
-        }, '-=0.3')
-        .from('.hero-image', {
-            x: 60, opacity: 0, duration: 1, ease: 'power3.out'
-        }, '-=0.8')
-        .from('.scroll-indicator', {
-            y: 20, opacity: 0, duration: 0.6
-        }, '-=0.3');
-} else {
-    gsap.from('.hero-content > *', {
-        y: 20, opacity: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out'
-    });
-    gsap.from('.hero-image', {
-        y: 20, opacity: 0, duration: 0.6, delay: 0.4, ease: 'power2.out'
-    });
-}
+heroTl
+    .from('.hero-badge', {
+        y: 30, opacity: 0, duration: 0.8
+    })
+    .from('.hero-title', {
+        y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
+    }, '-=0.3')
+    .to('.hero-subtitle .letter', {
+        y: 0, opacity: 1, duration: 0.5, stagger: 0.04, ease: 'back.out(1.5)'
+    }, '-=0.3')
+    .from('.hero-description', {
+        y: 20, opacity: 0, duration: 0.8
+    }, '-=0.2')
+    .from('.hero-buttons .btn', {
+        y: 20, opacity: 0, duration: 0.6, stagger: 0.15
+    }, '-=0.4')
+    .from('.social-link', {
+        y: 15, opacity: 0, duration: 0.4, stagger: 0.1
+    }, '-=0.3')
+    .from('.hero-image', {
+        x: 60, opacity: 0, duration: 1, ease: 'power3.out'
+    }, '-=0.8')
+    .from('.scroll-indicator', {
+        y: 20, opacity: 0, duration: 0.6
+    }, '-=0.3');
 
 // ── Section Title Reveals (on scroll) ────────────────────
 document.querySelectorAll('section .text-reveal').forEach(el => {
