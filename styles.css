@@ -1266,7 +1266,7 @@ section {
     }
 }
 
-/* Mobile: hide hero image + scroll indicator, kill empty space, prevent horizontal scroll */
+/* Mobile: kill empty space, hide scroll indicator, prevent horizontal scroll */
 html {
     overflow-x: hidden;
 }
@@ -1277,7 +1277,6 @@ html {
         padding-bottom: var(--spacing-xl);
     }
 
-    .hero-image,
     .scroll-indicator {
         display: none;
     }
