@@ -1,375 +1,156 @@
-// ── Theme Toggle ──────────────────────────────────────────
-const themeToggle = document.getElementById('themeToggle');
-const html = document.documentElement;
+/* ============================================================
+   MHN — Portfolio 2026
+   ============================================================ */
 
-// Apply saved theme on load
+const html = document.documentElement;
+html.classList.add('js'); // enables reveal initial states only when JS runs
+
+/* ── Theme toggle ─────────────────────────────────────────── */
 const savedTheme = localStorage.getItem('theme') || 'dark';
 html.setAttribute('data-theme', savedTheme);
 
-themeToggle.addEventListener('click', () => {
-    const current = html.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
+document.getElementById('themeToggle').addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
 });
 
-// ── Smooth scroll for navigation links ───────────────────
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
+/* ── Nav scroll state ─────────────────────────────────────── */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
 
-// ── Navbar scroll effect ─────────────────────────────────
-const navbar = document.getElementById('navbar');
-let lastScroll = 0;
+/* ── Mobile menu ──────────────────────────────────────────── */
+const burger = document.getElementById('burger');
+const menuOverlay = document.getElementById('menuOverlay');
 
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-    
-    if (currentScroll > 100) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
-    }
-    
-    lastScroll = currentScroll;
-});
+function setMenu(open) {
+    burger.classList.toggle('open', open);
+    menuOverlay.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open);
+    menuOverlay.setAttribute('aria-hidden', !open);
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+burger.addEventListener('click', () => setMenu(!menuOverlay.classList.contains('open')));
+menuOverlay.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
-// ── Active navigation link on scroll ─────────────────────
-const sections = document.querySelectorAll('section');
+/* ── Active nav link ──────────────────────────────────────── */
 const navLinks = document.querySelectorAll('.nav-link');
+const sections = [...navLinks].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
 
-window.addEventListener('scroll', () => {
-    let current = '';
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        
-        if (pageYOffset >= sectionTop - 200) {
-            current = section.getAttribute('id');
+const spy = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + entry.target.id));
         }
     });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
+}, { rootMargin: '-40% 0px -55% 0px' });
+sections.forEach(s => spy.observe(s));
+
+/* ── Karachi clock ────────────────────────────────────────── */
+function tickClock() {
+    const t = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Karachi', hour: '2-digit', minute: '2-digit'
+    }).format(new Date());
+    const a = document.getElementById('localTime');
+    const b = document.getElementById('footTime');
+    if (a) a.textContent = t;
+    if (b) b.textContent = t;
+}
+tickClock();
+setInterval(tickClock, 30000);
+
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ── Scroll reveals ───────────────────────────────────────── */
+const revealTargets = [];
+document.querySelectorAll('.reveal-group, .section-head, .project, .more-card, .skill-row, .stat, .c-card, .edu-item, .about-copy, .edu, .contact-mail, .contact .section-tag, .t-card, .t-note, .service-row')
+    .forEach(el => { el.classList.add('fade-up'); revealTargets.push(el); });
+document.querySelectorAll('.line').forEach(el => revealTargets.push(el));
+
+const revealer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('in');
+            revealer.unobserve(entry.target);
         }
     });
-});
+}, { threshold: 0.12 });
 
-// ── Mobile menu toggle ───────────────────────────────────
-const mobileToggle = document.getElementById('mobileToggle');
-const navMenu = document.getElementById('navMenu');
-
-mobileToggle.addEventListener('click', () => {
-    mobileToggle.classList.toggle('active');
-    navMenu.classList.toggle('active');
-});
-
-// Close mobile menu when clicking on a link
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        mobileToggle.classList.remove('active');
-        navMenu.classList.remove('active');
+// Stagger siblings slightly via transition-delay
+document.querySelectorAll('.work-featured, .more-grid, .stats, .contact-cards, .skills-rows, .edu-list, .t-grid, .service-list').forEach(group => {
+    [...group.children].forEach((child, i) => {
+        child.style.transitionDelay = `${Math.min(i * 90, 450)}ms`;
     });
 });
-
-// ── GSAP + ScrollTrigger ─────────────────────────────────
-gsap.registerPlugin(ScrollTrigger);
-
-// ── Text Reveal: Only for SIMPLE text elements (no nested HTML) ──
-document.querySelectorAll('.text-reveal').forEach(el => {
-    // SKIP the hero-title — it has nested <span> tags that break
-    if (el.classList.contains('hero-title')) return;
-    
-    const text = el.textContent;
-    el.innerHTML = text.split('').map(char =>
-        char === ' ' ? '<span class="letter-space"> </span>' :
-        `<span class="letter">${char}</span>`
-    ).join('');
+document.querySelectorAll('.hero .line').forEach((line, i) => {
+    line.querySelector('.line-inner').style.transitionDelay = `${150 + i * 120}ms`;
+});
+document.querySelectorAll('.contact .line').forEach((line, i) => {
+    line.querySelector('.line-inner').style.transitionDelay = `${i * 120}ms`;
 });
 
-// ── Hero Entrance Animation ──────────────────────────────
-const heroTl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+revealTargets.forEach(el => revealer.observe(el));
 
-heroTl
-    .from('.hero-badge', {
-        y: 30, opacity: 0, duration: 0.8
-    })
-    .from('.hero-title', {
-        y: 40, opacity: 0, duration: 0.9, ease: 'power3.out'
-    }, '-=0.3')
-    .to('.hero-subtitle .letter', {
-        y: 0, opacity: 1, duration: 0.5, stagger: 0.04, ease: 'back.out(1.5)'
-    }, '-=0.3')
-    .from('.hero-description', {
-        y: 20, opacity: 0, duration: 0.8
-    }, '-=0.2')
-    .from('.hero-buttons .btn', {
-        y: 20, opacity: 0, duration: 0.6, stagger: 0.15
-    }, '-=0.4')
-    .from('.social-link', {
-        y: 15, opacity: 0, duration: 0.4, stagger: 0.1
-    }, '-=0.3')
-    .from('.hero-image', {
-        x: 60, opacity: 0, duration: 1, ease: 'power3.out'
-    }, '-=0.8')
-    .from('.scroll-indicator', {
-        y: 20, opacity: 0, duration: 0.6
-    }, '-=0.3');
-
-// ── Section Title Reveals (on scroll) ────────────────────
-document.querySelectorAll('section .text-reveal').forEach(el => {
-    if (el.closest('.hero')) return;
-
-    const letters = el.querySelectorAll('.letter');
-    if (letters.length === 0) return;
-
-    gsap.to(letters, {
-        y: 0,
-        opacity: 1,
-        duration: 0.5,
-        stagger: 0.03,
-        ease: 'back.out(1.5)',
-        scrollTrigger: {
-            trigger: el,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-        }
+/* ── Stat counters ────────────────────────────────────────── */
+const counters = document.querySelectorAll('.stat-num');
+const counterObs = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        counterObs.unobserve(entry.target);
+        const el = entry.target;
+        const target = parseInt(el.dataset.count, 10);
+        const suffix = el.dataset.suffix || '';
+        const duration = 1400;
+        const start = performance.now();
+        (function step(now) {
+            const p = Math.max(0, Math.min((now - start) / duration, 1));
+            const eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * eased) + (p === 1 ? suffix : '');
+            if (p < 1) requestAnimationFrame(step);
+        })(start);
     });
-});
+}, { threshold: 0.5 });
+counters.forEach(c => counterObs.observe(c));
 
-// ── Section Badges (slide up) ────────────────────────────
-gsap.utils.toArray('.section-badge').forEach(badge => {
-    gsap.from(badge, {
-        y: 30, opacity: 0, duration: 0.6,
-        scrollTrigger: {
-            trigger: badge,
-            start: 'top 90%',
-            toggleActions: 'play none none none'
-        }
+/* ── Magnetic buttons (fine pointers only) ────────────────── */
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    document.querySelectorAll('.magnetic').forEach(el => {
+        el.addEventListener('mousemove', e => {
+            const r = el.getBoundingClientRect();
+            const x = e.clientX - r.left - r.width / 2;
+            const y = e.clientY - r.top - r.height / 2;
+            el.style.transform = `translate(${x * 0.18}px, ${y * 0.22}px)`;
+        });
+        el.addEventListener('mouseleave', () => {
+            el.style.transform = '';
+        });
     });
-});
+}
 
-// ── Section Descriptions ─────────────────────────────────
-gsap.utils.toArray('.section-description').forEach(desc => {
-    gsap.from(desc, {
-        y: 20, opacity: 0, duration: 0.8,
-        scrollTrigger: {
-            trigger: desc,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-        }
+/* ── GSAP extras (progressive enhancement) ────────────────── */
+if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Subtle parallax on the hero glow
+    gsap.to('.hero-glow', {
+        yPercent: 25,
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
     });
-});
 
-// ── About Text (paragraphs slide in) ─────────────────────
-gsap.utils.toArray('.about-intro, .about-description').forEach((p, i) => {
-    gsap.from(p, {
-        y: 30, opacity: 0, duration: 0.8,
-        delay: i * 0.15,
-        scrollTrigger: {
-            trigger: p,
-            start: 'top 85%',
-            toggleActions: 'play none none none'
-        }
-    });
-});
-
-// ── Stat Cards (count up + scale in) ─────────────────────
-document.querySelectorAll('.stat-card').forEach((card, i) => {
-    gsap.from(card, {
-        y: 40, opacity: 0, scale: 0.9, duration: 0.6,
-        delay: i * 0.1,
-        ease: 'back.out(1.7)',
-        scrollTrigger: {
-            trigger: card,
-            start: 'top 90%',
-            toggleActions: 'play none none none',
-            onEnter: () => {
-                const numEl = card.querySelector('.stat-number');
-                if (numEl && numEl.dataset.count) {
-                    const target = parseInt(numEl.dataset.count);
-                    const suffix = numEl.dataset.suffix || '';
-                    const obj = { val: 0 };
-                    gsap.to(obj, {
-                        val: target,
-                        duration: 1.5,
-                        ease: 'power2.out',
-                        onUpdate: () => {
-                            numEl.textContent = Math.round(obj.val) + suffix;
-                        }
-                    });
-                }
+    // Marquee speeds up slightly while scrolling fast
+    const track = document.querySelector('.marquee-track');
+    if (track) {
+        ScrollTrigger.create({
+            trigger: '.marquee',
+            start: 'top bottom',
+            end: 'bottom top',
+            onUpdate: self => {
+                track.style.animationDuration = Math.abs(self.getVelocity()) > 800 ? '18s' : '30s';
             }
-        }
-    });
-});
-
-// ── Skill Categories (stagger from below) ────────────────
-gsap.utils.toArray('.skill-category').forEach((cat, i) => {
-    gsap.from(cat, {
-        y: 50, opacity: 0, duration: 0.7,
-        delay: i * 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: cat,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-        }
-    });
-});
-
-// ── Project Cards (alternate left/right fly-in) ──────────
-document.querySelectorAll('.project-card').forEach((card, i) => {
-    const fromLeft = i % 2 === 0;
-    gsap.from(card, {
-        x: fromLeft ? -80 : 80,
-        y: 30,
-        opacity: 0,
-        duration: 0.9,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: card,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-        }
-    });
-});
-
-// ── Education Timeline (cascade in from left) ────────────
-document.querySelectorAll('.timeline-item').forEach((item, i) => {
-    gsap.from(item, {
-        x: -50, opacity: 0, duration: 0.7,
-        delay: i * 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-            trigger: item,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-        }
-    });
-});
-
-// ── Contact Cards (stagger scale-in) ─────────────────────
-gsap.utils.toArray('.contact-card').forEach((card, i) => {
-    gsap.from(card, {
-        y: 40, opacity: 0, scale: 0.95, duration: 0.6,
-        delay: i * 0.1,
-        ease: 'back.out(1.5)',
-        scrollTrigger: {
-            trigger: card,
-            start: 'top 88%',
-            toggleActions: 'play none none none'
-        }
-    });
-});
-
-// ── Parallax Gradient Orbs (desktop only) ────────────────
-if (window.innerWidth > 768) {
-    window.addEventListener('mousemove', (e) => {
-        const orbs = document.querySelectorAll('.gradient-orb');
-        const mouseX = e.clientX / window.innerWidth;
-        const mouseY = e.clientY / window.innerHeight;
-
-        orbs.forEach((orb, index) => {
-            const speed = (index + 1) * 20;
-            const x = (mouseX - 0.5) * speed;
-            const y = (mouseY - 0.5) * speed;
-
-            gsap.to(orb, { x, y, duration: 1, ease: 'power2.out' });
         });
-    });
-}
-
-// ── Skill tags hover effect ──────────────────────────────
-const skillTags = document.querySelectorAll('.skill-tag');
-skillTags.forEach(tag => {
-    tag.addEventListener('mouseenter', function () {
-        gsap.to(this, { scale: 1.1, duration: 0.2, ease: 'power2.out' });
-    });
-
-    tag.addEventListener('mouseleave', function () {
-        gsap.to(this, { scale: 1, duration: 0.2, ease: 'power2.out' });
-    });
-});
-
-// ── Project cards tilt effect (desktop only) ─────────────
-if (window.innerWidth > 768) {
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach(card => {
-        card.addEventListener('mousemove', function (e) {
-            const rect = this.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-
-            const rotateX = (y - centerY) / 25;
-            const rotateY = (centerX - x) / 25;
-
-            gsap.to(this, {
-                rotateX, rotateY,
-                transformPerspective: 1000,
-                duration: 0.3,
-                ease: 'power2.out'
-            });
-        });
-
-        card.addEventListener('mouseleave', function () {
-            gsap.to(this, {
-                rotateX: 0, rotateY: 0,
-                duration: 0.5,
-                ease: 'elastic.out(1, 0.5)'
-            });
-        });
-    });
-}
-
-// ── Magnetic buttons (desktop only) ──────────────────────
-if (window.innerWidth > 768) {
-    const magneticButtons = document.querySelectorAll('.btn, .project-btn, .social-link');
-    magneticButtons.forEach(btn => {
-        btn.addEventListener('mousemove', function (e) {
-            const rect = this.getBoundingClientRect();
-            const h = rect.width / 2;
-            const v = rect.height / 2;
-            const x = e.clientX - rect.left - h;
-            const y = e.clientY - rect.top - v;
-
-            this.style.transform = `translate(${x * 0.15}px, ${y * 0.15}px)`;
-        });
-
-        btn.addEventListener('mouseleave', function () {
-            this.style.transform = `translate(0px, 0px)`;
-        });
-    });
-}
-
-// ── Page Load Animation ──────────────────────────────────
-gsap.from('body', { opacity: 0, duration: 0.5, ease: 'power2.out' });
-
-// ── Scroll indicator hide ────────────────────────────────
-const scrollIndicator = document.querySelector('.scroll-indicator');
-if (scrollIndicator) {
-    window.addEventListener('scroll', () => {
-        if (window.pageYOffset > 200) {
-            scrollIndicator.style.opacity = '0';
-            scrollIndicator.style.pointerEvents = 'none';
-        } else {
-            scrollIndicator.style.opacity = '1';
-            scrollIndicator.style.pointerEvents = 'auto';
-        }
-    });
+    }
 }
