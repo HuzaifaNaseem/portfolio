@@ -1,0 +1,5 @@
+# Netlify reads this file; GitHub Pages ignores it.
+# This repo is also connected to a Netlify site, which served a duplicate of
+# the portfolio at *.netlify.app. Send all of that traffic to the real domain
+# so there is a single canonical address.
+/*  https://huzaifanaseem.com/:splat  301!
