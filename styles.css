@@ -253,14 +253,19 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     position: fixed;
     inset: 0;
     z-index: 1001;
-    padding-top: 5rem;
     /* Fully opaque: backdrop-filter is unreliable on mobile browsers, and any
        alpha here lets the page bleed through behind the menu. */
     background: var(--bg);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding: 0 clamp(1.5rem, 8vw, 4rem);
+    /* Top-aligned and scrollable rather than centred: once the list is taller
+       than the viewport, centring pushes the first item up behind the fixed
+       header with no way to reach it. The top padding clears that header. */
+    justify-content: flex-start;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    padding: 5.5rem clamp(1.5rem, 8vw, 4rem) 2.5rem;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.4s ease, visibility 0.4s ease;
@@ -272,9 +277,9 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     align-items: baseline;
     gap: 1rem;
     font-family: var(--font-display);
-    font-size: clamp(2rem, 8vw, 3rem);
+    font-size: clamp(1.75rem, 7vw, 2.6rem);
     font-weight: 700;
-    padding: 0.55rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid var(--line);
     transition: color 0.3s, padding-left 0.3s;
 }
@@ -288,7 +293,8 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 }
 .menu-link:hover { padding-left: 0.6rem; }
 .menu-foot {
-    margin-top: 2.5rem;
+    margin-top: 2rem;
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     gap: 0.55rem;
