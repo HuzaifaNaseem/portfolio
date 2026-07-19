@@ -130,7 +130,10 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .nav {
     position: fixed;
     top: 0; left: 0; right: 0;
-    z-index: 1000;
+    /* Must sit above .menu-overlay: .nav creates a stacking context, so the
+       burger's own z-index can never lift it above a higher sibling. Without
+       this the close (X) button is painted under the open menu. */
+    z-index: 1002;
     background: rgba(10, 10, 15, 0.8);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
@@ -250,9 +253,10 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     position: fixed;
     inset: 0;
     z-index: 1001;
-    background: rgba(10, 10, 15, 0.97);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    padding-top: 5rem;
+    /* Fully opaque: backdrop-filter is unreliable on mobile browsers, and any
+       alpha here lets the page bleed through behind the menu. */
+    background: var(--bg);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -261,7 +265,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     visibility: hidden;
     transition: opacity 0.4s ease, visibility 0.4s ease;
 }
-[data-theme="light"] .menu-overlay { background: rgba(248, 249, 255, 0.98); }
+[data-theme="light"] .menu-overlay { background: var(--bg); }
 .menu-overlay.open { opacity: 1; visibility: visible; }
 .menu-link {
     display: flex;

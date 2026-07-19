@@ -35,6 +35,12 @@ function setMenu(open) {
 burger.addEventListener('click', () => setMenu(!menuOverlay.classList.contains('open')));
 menuOverlay.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
+// Escape is the expected way out of a full-screen menu, and it's the only
+// route if the close control is ever obscured.
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && menuOverlay.classList.contains('open')) setMenu(false);
+});
+
 /* ── Active nav link ──────────────────────────────────────── */
 const navLinks = document.querySelectorAll('.nav-link');
 const sections = [...navLinks].map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
