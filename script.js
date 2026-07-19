@@ -69,19 +69,10 @@ document.querySelectorAll('.reveal-group, .section-head, .project, .more-card, .
     .forEach(el => { el.classList.add('fade-up'); revealTargets.push(el); });
 document.querySelectorAll('.line').forEach(el => revealTargets.push(el));
 
-const revealer = new IntersectionObserver(entries => {
-    entries.forEach((entry, i) => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('in');
-            revealer.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.12 });
-
 // Stagger siblings slightly via transition-delay
 document.querySelectorAll('.work-featured, .more-grid, .stats, .contact-cards, .skills-rows, .edu-list, .t-grid, .service-list').forEach(group => {
     [...group.children].forEach((child, i) => {
-        child.style.transitionDelay = `${Math.min(i * 90, 450)}ms`;
+        child.style.transitionDelay = `${Math.min(i * 70, 280)}ms`;
     });
 });
 document.querySelectorAll('.hero .line').forEach((line, i) => {
@@ -91,28 +82,57 @@ document.querySelectorAll('.contact .line').forEach((line, i) => {
     line.querySelector('.line-inner').style.transitionDelay = `${i * 120}ms`;
 });
 
-revealTargets.forEach(el => revealer.observe(el));
-
 /* ── Stat counters ────────────────────────────────────────── */
-const counters = document.querySelectorAll('.stat-num');
-const counterObs = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        counterObs.unobserve(entry.target);
-        const el = entry.target;
-        const target = parseInt(el.dataset.count, 10);
-        const suffix = el.dataset.suffix || '';
-        const duration = 1400;
-        const start = performance.now();
-        (function step(now) {
-            const p = Math.max(0, Math.min((now - start) / duration, 1));
-            const eased = 1 - Math.pow(1 - p, 3);
-            el.textContent = Math.round(target * eased) + (p === 1 ? suffix : '');
-            if (p < 1) requestAnimationFrame(step);
-        })(start);
-    });
-}, { threshold: 0.5 });
-counters.forEach(c => counterObs.observe(c));
+function runCounter(el) {
+    const target = parseInt(el.dataset.count, 10);
+    const suffix = el.dataset.suffix || '';
+    const duration = 1400;
+    const start = performance.now();
+    (function step(now) {
+        const p = Math.max(0, Math.min((now - start) / duration, 1));
+        const eased = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.round(target * eased) + (p === 1 ? suffix : '');
+        if (p < 1) requestAnimationFrame(step);
+    })(start);
+}
+
+/* ── Reveal sweep ─────────────────────────────────────────────
+   A plain position check rather than IntersectionObserver: a fast
+   programmatic jump (nav link, page load on an anchor) can outrun the
+   observer's async callbacks and leave a whole section stuck invisible.
+   Anything whose top has passed the trigger line is revealed, no matter
+   how it got there. */
+let pending = revealTargets.slice();
+let pendingCounters = [...document.querySelectorAll('.stat-num')];
+
+function sweep() {
+    const line = window.innerHeight * 0.92;
+    if (pending.length) {
+        pending = pending.filter(el => {
+            if (el.getBoundingClientRect().top >= line) return true;
+            el.classList.add('in');
+            return false;
+        });
+    }
+    if (pendingCounters.length) {
+        pendingCounters = pendingCounters.filter(el => {
+            if (el.getBoundingClientRect().top >= window.innerHeight * 0.85) return true;
+            runCounter(el);
+            return false;
+        });
+    }
+}
+
+let sweepQueued = false;
+function queueSweep() {
+    if (sweepQueued) return;
+    sweepQueued = true;
+    requestAnimationFrame(() => { sweep(); sweepQueued = false; });
+}
+window.addEventListener('scroll', queueSweep, { passive: true });
+window.addEventListener('resize', queueSweep, { passive: true });
+window.addEventListener('load', sweep);
+sweep();
 
 /* ── Magnetic buttons (fine pointers only) ────────────────── */
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
@@ -134,9 +154,14 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' &&
     !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     gsap.registerPlugin(ScrollTrigger);
 
-    // Subtle parallax on the hero glow
-    gsap.to('.hero-glow', {
-        yPercent: 25,
+    // Subtle parallax on the hero orbs
+    gsap.to('.orb-1', {
+        yPercent: 30,
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+    });
+    gsap.to('.orb-2', {
+        yPercent: -20,
         ease: 'none',
         scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
     });
