@@ -640,39 +640,38 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(120% 120% at 50% 0%, rgba(255, 255, 255, 0.16) 0%, transparent 55%),
-        linear-gradient(180deg, transparent 45%, rgba(10, 10, 15, 0.55) 100%);
+    z-index: 2;
+    pointer-events: none;
+    background:
+        linear-gradient(180deg, rgba(10, 10, 15, 0.42) 0%, transparent 28%),
+        linear-gradient(180deg, transparent 52%, rgba(10, 10, 15, 0.72) 100%);
 }
 
 .project-index {
     position: absolute;
     top: 1.3rem; left: 1.5rem;
-    color: rgba(255, 255, 255, 0.85);
-    z-index: 2;
+    color: rgba(255, 255, 255, 0.9);
+    z-index: 3;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
-.project-word {
+/* Real project screenshots sit beneath the gradient tint, which keeps the
+   overlay index, pill and arrow readable whatever the shot contains. */
+.project-img {
     position: absolute;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-style: normal;
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-    letter-spacing: -0.02em;
-    color: #fff;
-    -webkit-text-fill-color: #fff;
-    background: none;
-    white-space: nowrap;
-    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-    transition: transform 0.5s var(--ease);
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    z-index: 1;
+    transition: transform 0.7s var(--ease);
 }
-.project-visual:hover .project-word { transform: translate(-50%, -50%) scale(1.06); }
+.project:hover .project-img { transform: scale(1.04); }
 
 .project-pill {
     position: absolute;
     bottom: 1.3rem; left: 1.5rem;
-    z-index: 2;
+    z-index: 3;
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -689,7 +688,7 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
 .project-arrow {
     position: absolute;
     top: 1.2rem; right: 1.2rem;
-    z-index: 2;
+    z-index: 3;
     width: 44px; height: 44px;
     border-radius: 50%;
     display: grid;
@@ -758,7 +757,6 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     padding: clamp(1.8rem, 3.5vw, 3rem);
 }
 .project.spotlight .project-title { font-size: clamp(1.5rem, 2.6vw, 2.1rem); }
-.project.spotlight .project-word { font-size: clamp(2.8rem, 6vw, 4.8rem); }
 .spotlight-tag {
     display: inline-block;
     width: fit-content;
@@ -785,6 +783,23 @@ button { font: inherit; color: inherit; background: none; border: none; cursor: 
     grid-template-columns: repeat(4, 1fr);
     gap: 1.3rem;
 }
+.more-media {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: -0.4rem -0.4rem 0.5rem;
+    background: var(--bg-tertiary);
+}
+.more-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 0.6s var(--ease);
+}
+.more-card:hover .more-media img { transform: scale(1.06); }
+
 .more-card {
     background: var(--glass);
     backdrop-filter: blur(12px);
