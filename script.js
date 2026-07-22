@@ -71,7 +71,7 @@ document.getElementById('year').textContent = new Date().getFullYear();
 
 /* ── Scroll reveals ───────────────────────────────────────── */
 const revealTargets = [];
-document.querySelectorAll('.reveal-group, .section-head, .project, .more-card, .skill-row, .stat, .c-card, .edu-item, .about-copy, .edu, .contact-mail, .contact .section-tag, .t-card, .t-note, .service-row')
+document.querySelectorAll('.reveal-group, .section-head, .project, .more-card, .skill-row, .stat, .c-card, .edu-item, .about-copy, .edu, .contact-lead, .contact-form, .contact-or, .contact .section-tag, .t-card, .t-note, .service-row')
     .forEach(el => { el.classList.add('fade-up'); revealTargets.push(el); });
 document.querySelectorAll('.line').forEach(el => revealTargets.push(el));
 
@@ -184,4 +184,116 @@ if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined' &&
             }
         });
     }
+}
+
+/* ── Contact form ─────────────────────────────────────────────
+   Posts to Web3Forms. Until an access key is set, it falls back to
+   opening a pre-filled email so the form is never a dead end.
+   To activate: get a free key at https://web3forms.com (enter your
+   email, they send it instantly) and paste it below. */
+const WEB3FORMS_KEY = 'a3d80642-599c-4f89-abf9-0ec119f52432';
+const CONTACT_EMAIL = 'huzaifakhan654916@gmail.com';
+
+const form = document.getElementById('contactForm');
+if (form) {
+    const statusEl = document.getElementById('cf-status');
+    const submitBtn = document.getElementById('cf-submit');
+
+    const setError = (id, msg) => {
+        const field = document.getElementById(id).closest('.field');
+        field.classList.toggle('invalid', Boolean(msg));
+        field.querySelector('.field-error').textContent = msg || '';
+    };
+
+    const fName = document.getElementById('cf-name');
+    const fEmail = document.getElementById('cf-email');
+    const fType = document.getElementById('cf-type');
+    const fMsg = document.getElementById('cf-message');
+
+    function validate() {
+        let ok = true;
+        const name = fName.value.trim();
+        const email = fEmail.value.trim();
+        const message = fMsg.value.trim();
+
+        setError('cf-name', name ? '' : 'Please enter your name.');
+        if (!name) ok = false;
+
+        // Deliberately loose: strict email regexes reject valid addresses.
+        setError('cf-email', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? '' : 'Please enter a valid email.');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) ok = false;
+
+        setError('cf-message', message.length >= 10 ? '' : 'Please add a little more detail.');
+        if (message.length < 10) ok = false;
+
+        return ok;
+    }
+
+    ['cf-name', 'cf-email', 'cf-message'].forEach(id => {
+        document.getElementById(id).addEventListener('blur', validate);
+    });
+
+    function mailtoFallback() {
+        const subject = `Portfolio enquiry — ${fType.value}`;
+        const body =
+            `Name: ${fName.value}\n` +
+            `Email: ${fEmail.value}\n` +
+            `Type: ${fType.value}\n\n` +
+            fMsg.value;
+        window.location.href =
+            `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        statusEl.textContent = 'Opening your email app…';
+        statusEl.className = 'form-status';
+    }
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (form.querySelector('.hp').checked) return;      // honeypot tripped
+        if (!validate()) {
+            statusEl.textContent = 'Please fix the highlighted fields.';
+            statusEl.className = 'form-status err';
+            return;
+        }
+
+        if (WEB3FORMS_KEY === 'YOUR_ACCESS_KEY_HERE') {
+            mailtoFallback();
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        statusEl.textContent = 'Sending…';
+        statusEl.className = 'form-status';
+
+        try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                body: JSON.stringify({
+                    access_key: WEB3FORMS_KEY,
+                    subject: `Portfolio enquiry — ${fType.value}`,
+                    from_name: fName.value,
+                    name: fName.value,
+                    email: fEmail.value,
+                    project_type: fType.value,
+                    message: fMsg.value
+                })
+            });
+            const data = await res.json();
+            if (data.success) {
+                form.reset();
+                statusEl.textContent = 'Thanks — I’ll get back to you within a day.';
+                statusEl.className = 'form-status ok';
+            } else {
+                throw new Error(data.message || 'Send failed');
+            }
+        } catch (err) {
+            statusEl.innerHTML =
+                'Could not send. <a href="mailto:' + CONTACT_EMAIL + '" style="text-decoration:underline">Email me directly</a>.';
+            statusEl.className = 'form-status err';
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+        }
+    });
 }
