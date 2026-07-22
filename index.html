@@ -60,7 +60,7 @@
     </script>
     <!-- Bump ?v= whenever styles.css or script.js changes, so returning
          visitors are not served a cached copy of the old asset. -->
-    <link rel="stylesheet" href="styles.css?v=20260723-2">
+    <link rel="stylesheet" href="styles.css?v=20260723-3">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -654,14 +654,14 @@
                     <div class="field">
                         <label for="cf-name">Name</label>
                         <input type="text" id="cf-name" name="name" required autocomplete="name"
-                            placeholder="Your name">
-                        <span class="field-error" data-for="cf-name"></span>
+                            placeholder="Your name" aria-describedby="cf-name-error">
+                        <span class="field-error" id="cf-name-error" data-for="cf-name"></span>
                     </div>
                     <div class="field">
                         <label for="cf-email">Email</label>
                         <input type="email" id="cf-email" name="email" required autocomplete="email"
-                            placeholder="you@company.com">
-                        <span class="field-error" data-for="cf-email"></span>
+                            placeholder="you@company.com" aria-describedby="cf-email-error">
+                        <span class="field-error" id="cf-email-error" data-for="cf-email"></span>
                     </div>
                     <div class="field field--full">
                         <label for="cf-type">What do you need?</label>
@@ -677,8 +677,9 @@
                     <div class="field field--full">
                         <label for="cf-message">Message</label>
                         <textarea id="cf-message" name="message" rows="5" required
-                            placeholder="A few lines about the project, timeline and budget range."></textarea>
-                        <span class="field-error" data-for="cf-message"></span>
+                            placeholder="A few lines about the project, timeline and budget range."
+                            aria-describedby="cf-message-error"></textarea>
+                        <span class="field-error" id="cf-message-error" data-for="cf-message"></span>
                     </div>
 
                     <!-- Honeypot: bots fill hidden fields, humans never see this -->
@@ -738,7 +739,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="script.js?v=20260723-2"></script>
+    <script src="script.js?v=20260723-3"></script>
 </body>
 
 </html>

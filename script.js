@@ -200,9 +200,13 @@ if (form) {
     const submitBtn = document.getElementById('cf-submit');
 
     const setError = (id, msg) => {
-        const field = document.getElementById(id).closest('.field');
+        const input = document.getElementById(id);
+        const field = input.closest('.field');
         field.classList.toggle('invalid', Boolean(msg));
         field.querySelector('.field-error').textContent = msg || '';
+        // aria-invalid pairs with the input's aria-describedby, so a screen
+        // reader announces the field as invalid and reads out why.
+        input.setAttribute('aria-invalid', msg ? 'true' : 'false');
     };
 
     const fName = document.getElementById('cf-name');
