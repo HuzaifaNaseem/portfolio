@@ -14,3 +14,7 @@ npm-debug.log*
 
 # Ignore temporary files
 *.tmp
+
+# Private CV: committing these would publish them at huzaifanaseem.com
+resume.html
+resume.pdf
